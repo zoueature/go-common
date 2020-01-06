@@ -103,10 +103,13 @@ func (c *Client) Get(requestUrl string, queries map[string]string, header http.H
 	return response
 }
 
-func (c *Client) Request(method, requestUrl string, body io.Reader) (*http.Response, error) {
+func (c *Client) Request(method, requestUrl string, body io.Reader, header http.Header) (*http.Response, error) {
 	newRequest, err := http.NewRequest(method, requestUrl, body)
 	if err != nil {
 		return nil, err
+	}
+	if header != nil {
+		newRequest.Header = header
 	}
 	response, err := c.Do(newRequest)
 	if err != nil {
